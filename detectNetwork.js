@@ -10,14 +10,20 @@
 var detectNetwork = function(cardNumber) {
   var visaLength = new Set([13, 16, 19]);
   var mcPrefix = new Set(['51', '52', '53', '54', '55']);
-  if(cardNumber.length == 14 && (cardNumber.substring(0, 2)=='38' || cardNumber.substring(0, 2)=='39')) {
+  var discoverPrefix = new Set(['6011', '644', '645', '646', '647', '648', '649', '65']);
+  var mastroPrefix = new Set(['5018', '5020', '5038', '6304']);
+  if(cardNumber.length == 14 && (cardNumber.substring(0, 2)==='38' || cardNumber.substring(0, 2)==='39')) {
     return "Diner's Club";
-  } else if(cardNumber.length == 15 && (cardNumber.substring(0, 2)=='34' || cardNumber.substring(0, 2)=='37')) {
+  } else if(cardNumber.length == 15 && (cardNumber.substring(0, 2)==='34' || cardNumber.substring(0, 2)==='37')) {
     return "American Express";
-  } else if(visaLength.has(cardNumber.length) && cardNumber[0] == '4') {
+  } else if(visaLength.has(cardNumber.length) && cardNumber[0]==='4') {
     return "Visa";
-  } else if(mcPrefix.has(cardNumber.substring(0, 2)) && cardNumber.length == 16) {
+  } else if(mcPrefix.has(cardNumber.substring(0, 2)) && cardNumber.length===16) {
     return "MasterCard";
+  } else if((discoverPrefix.has(cardNumber.substring(0, 4)) || discoverPrefix.has(cardNumber.substring(0, 2))) && (cardNumber.length===16 || cardNumber.length===19)) {
+    return "Discover";
+  } else if(mastroPrefix.has(cardNumber.substring(0, 4)) && (cardNumber.length>=12 && cardNumber.length<=19)) {
+    return "Maestro";
   }
   // Note: `cardNumber` will always be a string
   // The Diner's Club network always starts with a 38 or 39 and is 14 digits long

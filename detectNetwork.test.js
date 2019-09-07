@@ -140,11 +140,23 @@ describe('MasterCard', function() {
 describe('Discover', function() {
   // Tests without a function will be marked as "pending" and not run
   // Implement these tests (and others) and make them pass!
-  it('has a prefix of 6011 and a length of 16');
-  it('has a prefix of 6011 and a length of 19');
+  var assert = chai.assert;
+  it('has a prefix of 6011 and a length of 16', function() {
+    assert(detectNetwork('6011567890123456')==='Discover');
+  });
+  it('has a prefix of 6011 and a length of 19', function() {
+    assert(detectNetwork('6011654321098765123')==='Discover');
+  });
 });
 
 describe('Maestro', function() {
   // Write full test coverage for the Maestro card
+  var assert = chai.assert;
+  it('has a prefix of 5018, 5020, 5038, or 6304, and a length of 12-19', function() {
+    assert(detectNetwork('5018111111111')==='Maestro');
+  });
+  it('has a prefix of 5018, 5020, 5038, or 6304, and a length of 12-19', function() {
+    assert(detectNetwork('50209999999999')==='Maestro');
+  });
 });
 
