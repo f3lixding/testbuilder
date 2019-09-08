@@ -125,15 +125,15 @@ describe('MasterCard', function() {
   // and should, but that's just for learning), so once you've gotten
   // these tests to pass using should syntax, refactor your tests to
   // use either expect or should, but not both.
-  var should = chai.should();
+  // var should = chai.should();
 
-  it('has a prefix of 54 and a length of 16', function() {
-    detectNetwork('5412345678901234').should.equal('MasterCard');
-  });
+  // it('has a prefix of 54 and a length of 16', function() {
+  //   detectNetwork('5412345678901234').should.equal('MasterCard');
+  // });
 
-  it('has a prefix of 55 and a length of 16', function() {
-    detectNetwork('5512345678901234').should.equal('MasterCard');
-  })
+  // it('has a prefix of 55 and a length of 16', function() {
+  //   detectNetwork('5512345678901234').should.equal('MasterCard');
+  // })
 
 });
 
@@ -141,22 +141,58 @@ describe('Discover', function() {
   // Tests without a function will be marked as "pending" and not run
   // Implement these tests (and others) and make them pass!
   var assert = chai.assert;
-  it('has a prefix of 6011 and a length of 16', function() {
-    assert(detectNetwork('6011567890123456')==='Discover');
-  });
-  it('has a prefix of 6011 and a length of 19', function() {
-    assert(detectNetwork('6011654321098765123')==='Discover');
-  });
+  var otherPrefix = ['6011', '65'];
+  for(var prefix = 644; prefix <= 649; prefix++) {
+    (function(prefix) {
+      it('has a prefix of ' + prefix + ' and a length of 16', function() {
+        assert(detectNetwork(prefix + '1111111111111')==='Discover');
+      });
+      it('has a prefix of ' + prefix + ' and a length of 19', function() {
+        assert(detectNetwork(prefix + '1111111111111111')==='Discover');
+      });
+    })(prefix);
+  }
+
+  for(var i=0; i<otherPrefix.length; i++) {
+    var prefix = otherPrefix[i];
+    if(prefix==='6011') {
+      (function(prefix) {
+        it('has a prefix of ' + prefix + ' and a length of 16', function() {
+          assert(detectNetwork(prefix + '111111111111')==='Discover');
+        });
+        it('has a prefix of ' + prefix +' and a length of 19', function() {
+          assert(detectNetwork(prefix + '111111111111111')==='Discover');
+        });
+      })(prefix);
+    } else {
+      (function(prefix) {
+        it('has a prefix of ' + prefix + ' and a length of 16', function() {
+          assert(detectNetwork(prefix + '11111111111111')==='Discover');
+        });
+        it('has a prefix of ' + prefix +' and a length of 19', function() {
+          assert(detectNetwork(prefix + '11111111111111111')==='Discover');
+        });
+      })(prefix);
+    }
+  }
 });
 
 describe('Maestro', function() {
   // Write full test coverage for the Maestro card
   var assert = chai.assert;
-  it('has a prefix of 5018, 5020, 5038, or 6304, and a length of 12-19', function() {
-    assert(detectNetwork('5018111111111')==='Maestro');
-  });
-  it('has a prefix of 5018, 5020, 5038, or 6304, and a length of 12-19', function() {
-    assert(detectNetwork('50209999999999')==='Maestro');
-  });
+  var prefixList = ['5018', '5020', '5038', '6304'];
+  for(var i=0; i<prefixList.length; i++) {
+    for(var length=12; length<=19; length++) {
+      var prefix = prefixList[i];
+      var suffix = Array(length-prefix.length);
+      suffix.fill('1', 0);
+      var suffix = suffix.join('');
+      (function(prefix, suffix) {
+        it('has a prefix of ' + prefix + ' and a length of ' + length, function() {
+          assert(detectNetwork(prefix + suffix)==='Maestro');
+        });
+      })(prefix, suffix);
+    }
+  }
 });
 

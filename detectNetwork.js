@@ -20,7 +20,7 @@ var detectNetwork = function(cardNumber) {
     return "Visa";
   } else if(mcPrefix.has(cardNumber.substring(0, 2)) && cardNumber.length===16) {
     return "MasterCard";
-  } else if((discoverPrefix.has(cardNumber.substring(0, 4)) || discoverPrefix.has(cardNumber.substring(0, 2))) && (cardNumber.length===16 || cardNumber.length===19)) {
+  } else if((discoverPrefix.has(cardNumber.substring(0, 4)) || discoverPrefix.has(cardNumber.substring(0, 3)) || discoverPrefix.has(cardNumber.substring(0,2))) && (cardNumber.length===16 || cardNumber.length===19)) {
     return "Discover";
   } else if(mastroPrefix.has(cardNumber.substring(0, 4)) && (cardNumber.length>=12 && cardNumber.length<=19)) {
     return "Maestro";
