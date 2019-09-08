@@ -12,6 +12,12 @@ var detectNetwork = function(cardNumber) {
   var mcPrefix = new Set(['51', '52', '53', '54', '55']);
   var discoverPrefix = new Set(['6011', '644', '645', '646', '647', '648', '649', '65']);
   var mastroPrefix = new Set(['5018', '5020', '5038', '6304']);
+  var unionPayObj = {
+    prefix : new Set(['4903', '4905', '4911', '4936', '564182', '633110', '6333', '6759']),
+    len : new Set([16, 18, 19])
+  };
+
+
   if(cardNumber.length == 14 && (cardNumber.substring(0, 2)==='38' || cardNumber.substring(0, 2)==='39')) {
     return "Diner's Club";
   } else if(cardNumber.length == 15 && (cardNumber.substring(0, 2)==='34' || cardNumber.substring(0, 2)==='37')) {
@@ -24,6 +30,10 @@ var detectNetwork = function(cardNumber) {
     return "Discover";
   } else if(mastroPrefix.has(cardNumber.substring(0, 4)) && (cardNumber.length>=12 && cardNumber.length<=19)) {
     return "Maestro";
+  } else if(((cardNumber.substring(0, 6)-'0'>=622126 && cardNumber.substring(0, 6)-'0'<=622925) || (cardNumber.substring(0, 3)-'0'>=624 && cardNumber.substring(0, 3)-'0'<=626) || (cardNumber.substring(0, 4)-'0'>=6282 && cardNumber.substring(0, 4)-'0'<=6288)) && (cardNumber.length>=16 && cardNumber.length<=19)) {
+    return "China UnionPay";
+  } else if((unionPayObj.prefix.has(cardNumber.substring(0, 4)) || unionPayObj.prefix.has(cardNumber.substring(0, 6))) && unionPayObj.len.has(cardNumber.length)) {
+    return "Switch";
   }
   // Note: `cardNumber` will always be a string
   // The Diner's Club network always starts with a 38 or 39 and is 14 digits long
