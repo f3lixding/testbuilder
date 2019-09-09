@@ -196,3 +196,62 @@ describe('Maestro', function() {
   }
 });
 
+// STEP FOUR TESTS
+function randomGen(suffixLen) {
+  var min = 10 ** (suffixLen - 1);
+  var max = 10 ** suffixLen - 1;
+  var res = Math.floor(Math.random() * (max - min) + min) + '';
+  return res;
+}
+
+describe('China UnionPay', function() {
+  var assert = chai.assert;
+  for(var prefix=622126; prefix<=622925; prefix++) {
+    for(var len=16; len<=19; len++) {
+      var suffix = randomGen(len-prefix.toString().length);
+      (function(prefix, suffix) {
+        it('has a prefix of ' + prefix + ' and a length of ' + len, function() {
+          assert(detectNetwork(prefix + suffix)==='China UnionPay');
+        });
+      })(prefix, suffix);
+    }
+  }
+  for(var prefix=624; prefix<=626; prefix++) {
+    for(var len=16; len<=19; len++) {
+      var suffix = randomGen(len-prefix.toString().length);
+      (function(prefix, suffix) {
+        it('has a prefix of ' + prefix + ' and a length of ' + len, function() {
+          assert(detectNetwork(prefix + suffix)==='China UnionPay');
+        });
+      })(prefix, suffix);
+    }
+  }
+  for(var prefix=6282; prefix<=6288; prefix++) {
+    for(var len=16; len<=19; len++) {
+      var suffix = randomGen(len-prefix.toString().length);
+      (function(prefix, suffix) {
+        it('has a prefix of ' + prefix + ' and a length of ' + len, function() {
+          assert(detectNetwork(prefix + suffix)==='China UnionPay');
+        });
+      })(prefix, suffix);
+    }
+  }
+});
+
+describe('Switch', function() {
+  var assert = chai.assert;
+  var prefixList = ['4903', '4905', '4911', '4936', '564182', '633110', '6333', '6759'];
+  var lenList = [16, 18, 19];
+  for(var i=0; i<prefixList.length; i++) {
+    for(var j=0; j<lenList.length; j++) {
+      var prefix = prefixList[i];
+      var suffix = randomGen(lenList[j]-prefix.length);
+      (function(prefix, suffix) {
+        it('has a prefix of ' + prefix + ' and a length of ' + lenList[j], function() {
+          assert(detectNetwork(prefix + suffix)==='Switch');
+        });
+      })(prefix, suffix);
+    }
+  }
+});
+
